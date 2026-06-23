@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jithendra Srinivas Chikkam — Data Analyst</title>
+<meta name="description" content="Data Analyst — SQL, Python, Power BI. Retail & Ops Analytics at Walmart.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B1220;
+  --bg-raised:#101A2E;
+  --bg-card:#131F38;
+  --line:#23304A;
+  --ink:#EDEFF4;
+  --ink-dim:#AEB7C7;
+  --muted:#6B7785;
+  --signal:#FF8A3D;
+  --signal-dim:#7A4A23;
+  --data-blue:#3DA9FC;
+  --good:#3DDC8C;
+  --font-display:'Space Grotesk', sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
+  --font-body:'Inter', sans-serif;
+  --maxw:1100px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+}
+
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+::selection{background:var(--signal); color:var(--bg);}
+
+a{color:inherit; text-decoration:none;}
+
+.wrap{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:0 32px;
+}
+
+/* ---------- background grid texture ---------- */
+.bg-grid{
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:48px 48px;
+  opacity:0.18;
+  z-index:0;
+  pointer-events:none;
+  mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 40%, transparent 100%);
+}
+
+/* ---------- nav ---------- */
+.nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:50;
+  backdrop-filter:blur(12px);
+  background:rgba(11,18,32,0.75);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:18px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.nav-logo{
+  font-family:var(--font-mono);
+  font-size:14px;
+  letter-spacing:0.02em;
+  color:var(--ink);
+}
+.nav-logo span{color:var(--signal);}
+.nav-links{
+  display:flex;
+  gap:28px;
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--ink-dim);
+}
+.nav-links a{
+  position:relative;
+  padding-bottom:4px;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a::after{
+  content:'';
+  position:absolute;
+  left:0; bottom:0;
+  width:0; height:1px;
+  background:var(--signal);
+  transition:width 0.25s ease;
+}
+.nav-links a:hover::after{width:100%;}
+.nav-links a.active{color:var(--signal);}
+.nav-links a.active::after{width:100%;}
+.nav-resume{
+  font-family:var(--font-mono);
+  font-size:12px;
+  border:1px solid var(--line);
+  padding:8px 14px;
+  border-radius:4px;
+  color:var(--ink);
+  transition:border-color 0.2s, color 0.2s;
+  white-space:nowrap;
+}
+.nav-resume:hover{border-color:var(--signal); color:var(--signal);}
+.nav-burger{display:none;}
+
+@media (max-width:720px){
+  .nav-links{display:none;}
+  .nav-resume{display:none;}
+}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding-top:90px;
+  z-index:1;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  top:-20%; right:-10%;
+  width:60%; height:70%;
+  background:radial-gradient(circle, rgba(61,169,252,0.10), transparent 65%);
+  pointer-events:none;
+  z-index:-1;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:-25%; left:-10%;
+  width:50%; height:60%;
+  background:radial-gradient(circle, rgba(255,138,61,0.08), transparent 65%);
+  pointer-events:none;
+  z-index:-1;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:48px;
+  align-items:center;
+  width:100%;
+  position:relative;
+  z-index:2;
+}
+@media (max-width:880px){
+  .hero-grid{grid-template-columns:1fr; gap:40px;}
+}
+
+#constellation{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  pointer-events:none;
+}
+
+.social-row{
+  display:flex;
+  gap:12px;
+  margin-top:28px;
+  opacity:0;
+  animation:fadeUp 0.7s ease forwards;
+  animation-delay:0.68s;
+}
+.social-pin{
+  width:38px; height:38px;
+  border-radius:50%;
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-mono);
+  font-size:12px;
+  font-weight:600;
+  color:var(--ink-dim);
+  transition:transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.social-pin:hover{
+  transform:translateY(-3px);
+  border-color:var(--signal);
+  color:var(--signal);
+  background:rgba(255,138,61,0.08);
+}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--signal);
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:20px;
+  opacity:0;
+  animation:fadeUp 0.6s ease forwards;
+  animation-delay:0.1s;
+}
+.eyebrow .dot{
+  width:7px; height:7px;
+  border-radius:50%;
+  background:var(--good);
+  box-shadow:0 0 0 0 rgba(61,220,140,0.6);
+  animation:pulse 2s infinite;
+  flex-shrink:0;
+}
+.role-rotate{
+  display:inline-block;
+  transition:opacity 0.25s ease;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(61,220,140,0.5);}
+  70%{box-shadow:0 0 0 6px rgba(61,220,140,0);}
+  100%{box-shadow:0 0 0 0 rgba(61,220,140,0);}
+}
+
+.hero h1{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(2.4rem, 5vw, 3.6rem);
+  line-height:1.08;
+  letter-spacing:-0.01em;
+  opacity:0;
+  animation:fadeUp 0.7s ease forwards;
+  animation-delay:0.22s;
+}
+.hero h1 .accent{color:var(--signal);}
+
+.hero-role{
+  font-family:var(--font-mono);
+  font-size:15px;
+  color:var(--ink-dim);
+  margin-top:18px;
+  height:24px;
+  opacity:0;
+  animation:fadeUp 0.7s ease forwards;
+  animation-delay:0.34s;
+}
+.hero-role .cursor{
+  display:inline-block;
+  width:8px; height:16px;
+  background:var(--signal);
+  margin-left:2px;
+  vertical-align:middle;
+  animation:blink 1s step-end infinite;
+}
+.hero-role .role-word{color:var(--data-blue); font-weight:600;}
+@keyframes blink{50%{opacity:0;}}
+
+.hero p.lede{
+  margin-top:24px;
+  font-size:16.5px;
+  color:var(--ink-dim);
+  max-width:520px;
+  opacity:0;
+  animation:fadeUp 0.7s ease forwards;
+  animation-delay:0.46s;
+}
+
+.hero-ctas{
+  margin-top:32px;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  opacity:0;
+  animation:fadeUp 0.7s ease forwards;
+  animation-delay:0.58s;
+}
+.btn{
+  font-family:var(--font-mono);
+  font-size:13.5px;
+  padding:13px 22px;
+  border-radius:5px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s, border-color .2s, color .2s;
+}
+.btn-primary{
+  background:var(--signal);
+  color:#1A0E04;
+  font-weight:600;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px -8px rgba(255,138,61,0.5);
+}
+.btn-ghost{
+  border:1px solid var(--line);
+  color:var(--ink);
+}
+.btn-ghost:hover{
+  border-color:var(--ink-dim);
+  transform:translateY(-2px);
+}
+
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(16px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* ---------- hero signature: avatar circle + floating stats ---------- */
+.avatar-wrap{
+  position:relative;
+  width:100%;
+  max-width:420px;
+  aspect-ratio:1/1;
+  margin:0 auto;
+  opacity:0;
+  animation:fadeUp 0.9s ease forwards;
+  animation-delay:0.5s;
+}
+.avatar-ring{
+  position:absolute;
+  inset:6%;
+  border-radius:50%;
+  background:radial-gradient(circle at 38% 32%, rgba(255,138,61,0.22), transparent 60%), var(--bg-card);
+  border:1px solid var(--line);
+  box-shadow:0 40px 70px -30px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.02);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation:bob 5s ease-in-out infinite;
+}
+@keyframes bob{
+  0%, 100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+@media (prefers-reduced-motion: reduce){
+  .avatar-ring{animation:none;}
+}
+.avatar-badge{
+  width:62%;
+  height:62%;
+  border-radius:50%;
+  background:linear-gradient(160deg, var(--bg-raised), var(--bg-card));
+  border:1px solid var(--signal-dim);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.avatar-initials{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(2.6rem, 7vw, 3.4rem);
+  letter-spacing:0.02em;
+  color:var(--signal);
+}
+
+.orbit-node{
+  position:absolute;
+  animation:floatpin 4.5s ease-in-out infinite;
+}
+.orbit-node .pin{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:7px 14px 7px 8px;
+  white-space:nowrap;
+  box-shadow:0 12px 24px -12px rgba(0,0,0,0.5);
+}
+.orbit-node .pin .ico{
+  width:8px; height:8px;
+  border-radius:50%;
+  background:var(--data-blue);
+  flex-shrink:0;
+}
+.orbit-node .pin .ico.ico-prev{
+  background:var(--good);
+}
+.orbit-node .pin .lbl{
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  color:var(--ink-dim);
+  transition:opacity 0.2s ease;
+}
+.orbit-node .pin .lbl b{color:var(--ink); font-weight:600;}
+
+.node-1{ top:2%; left:8%; animation-delay:0s; }
+.node-2{ top:14%; right:0%; animation-delay:0.6s; }
+.node-3{ bottom:10%; right:4%; animation-delay:1.2s; }
+.node-4{ bottom:0%; left:2%; animation-delay:1.8s; }
+
+@keyframes floatpin{
+  0%, 100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+@media (prefers-reduced-motion: reduce){
+  .orbit-node{animation:none;}
+}
+@media (max-width:520px){
+  .node-1, .node-2, .node-3, .node-4{ position:static; margin:6px auto; display:flex; justify-content:center; }
+  .avatar-wrap{ display:flex; flex-direction:column; align-items:center; gap:10px; max-width:280px; }
+}
+
+/* ---------- section shell ---------- */
+section{
+  position:relative;
+  z-index:1;
+  padding:110px 0;
+  border-top:1px solid var(--line);
+}
+.sec-tag{
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--signal);
+  margin-bottom:14px;
+  display:block;
+}
+.sec-tag::before{content:'-- ';color:var(--muted);}
+h2.sec-title{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(1.8rem, 3.4vw, 2.4rem);
+  margin-bottom:42px;
+  letter-spacing:-0.01em;
+}
+
+.reveal{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.in{opacity:1; transform:translateY(0);}
+.reveal-stagger > *{
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-stagger.in > *{opacity:1; transform:translateY(0);}
+.reveal-stagger.in > *:nth-child(1){transition-delay:0.02s;}
+.reveal-stagger.in > *:nth-child(2){transition-delay:0.10s;}
+.reveal-stagger.in > *:nth-child(3){transition-delay:0.18s;}
+.reveal-stagger.in > *:nth-child(4){transition-delay:0.26s;}
+.reveal-stagger.in > *:nth-child(5){transition-delay:0.34s;}
+.reveal-stagger.in > *:nth-child(6){transition-delay:0.42s;}
+
+/* ---------- about / stats ---------- */
+.about-grid{
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:60px;
+}
+@media (max-width:880px){.about-grid{grid-template-columns:1fr; gap:36px;}}
+.about-grid p{color:var(--ink-dim); font-size:16px; margin-bottom:16px;}
+.about-grid p strong{color:var(--ink); font-weight:600;}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:10px;
+  overflow:hidden;
+}
+.stat-cell{
+  background:var(--bg-card);
+  padding:26px 22px;
+}
+.stat-cell .num{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(1.5rem, 2.4vw, 2.1rem);
+  color:var(--signal);
+  line-height:1.1;
+  white-space:nowrap;
+}
+.stat-cell .lbl{
+  margin-top:8px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:0.02em;
+}
+
+/* ---------- skills ---------- */
+.skills-wrap{display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px;}
+@media (max-width:880px){.skills-wrap{grid-template-columns:1fr; gap:44px;}}
+
+.skillbar{margin-bottom:22px;}
+.skillbar-top{
+  display:flex;
+  justify-content:space-between;
+  font-family:var(--font-mono);
+  font-size:13px;
+  margin-bottom:8px;
+  color:var(--ink-dim);
+}
+.skillbar-top .pct{color:var(--signal);}
+.skillbar-track{
+  height:6px;
+  background:var(--bg-raised);
+  border:1px solid var(--line);
+  border-radius:4px;
+  overflow:hidden;
+}
+.skillbar-fill{
+  height:100%;
+  width:0%;
+  border-radius:4px;
+  background:linear-gradient(90deg, var(--data-blue), var(--signal));
+  transition:width 1.4s cubic-bezier(.16,1,.3,1);
+}
+
+.tag-cloud{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;}
+.tag{
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  padding:7px 13px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  color:var(--ink-dim);
+  transition:border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.tag:hover{border-color:var(--signal); color:var(--signal); transform:translateY(-2px);}
+
+.cert-list{margin-top:28px; display:flex; flex-direction:column; gap:10px;}
+.cert-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--ink-dim);
+}
+.cert-item .ck{color:var(--good);}
+.cert-item .ck-progress{color:var(--signal);}
+
+/* ---------- experience timeline ---------- */
+.timeline{position:relative; padding-left:28px;}
+.timeline::before{
+  content:'';
+  position:absolute;
+  left:5px; top:6px; bottom:6px;
+  width:1px;
+  background:var(--line);
+}
+.tl-item{position:relative; padding-bottom:48px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-dot{
+  position:absolute;
+  left:-28px; top:6px;
+  width:11px; height:11px;
+  border-radius:50%;
+  background:var(--bg);
+  border:2px solid var(--signal);
+}
+.tl-item.current .tl-dot{
+  background:var(--signal);
+  box-shadow:0 0 0 4px rgba(255,138,61,0.18);
+}
+.tl-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:6px;
+}
+.tl-role{font-family:var(--font-display); font-weight:600; font-size:19px;}
+.tl-company{color:var(--data-blue);}
+.tl-time{font-family:var(--font-mono); font-size:12px; color:var(--muted); white-space:nowrap;}
+.tl-loc{font-family:var(--font-mono); font-size:12px; color:var(--muted); margin-bottom:14px;}
+.tl-bullets{list-style:none; display:flex; flex-direction:column; gap:10px;}
+.tl-bullets li{
+  position:relative;
+  padding-left:18px;
+  color:var(--ink-dim);
+  font-size:15px;
+}
+.tl-bullets li::before{
+  content:'›';
+  position:absolute;
+  left:0; top:-1px;
+  color:var(--signal);
+  font-weight:700;
+}
+.tl-bullets li strong{color:var(--ink); font-weight:600;}
+.tl-bullets li code{
+  font-family:var(--font-mono);
+  font-size:0.85em;
+  color:var(--data-blue);
+  background:rgba(61,169,252,0.1);
+  border:1px solid rgba(61,169,252,0.25);
+  padding:1px 6px;
+  border-radius:4px;
+}
+.tl-badge{
+  display:inline-block;
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  color:var(--signal);
+  background:rgba(255,138,61,0.1);
+  border:1px solid var(--signal-dim);
+  padding:3px 9px;
+  border-radius:4px;
+  margin-bottom:10px;
+}
+
+/* ---------- projects ---------- */
+.proj-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:20px;
+}
+@media (max-width:880px){.proj-grid{grid-template-columns:1fr;}}
+.proj-card{
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:26px 24px;
+  transition:transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.proj-card:hover{
+  transform:translateY(-6px);
+  border-color:var(--signal-dim);
+  box-shadow:0 24px 40px -24px rgba(0,0,0,0.55);
+}
+.proj-icon{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:16px;
+}
+.proj-card h3{
+  font-family:var(--font-display);
+  font-size:17px;
+  font-weight:600;
+  margin-bottom:10px;
+}
+.proj-card p{color:var(--ink-dim); font-size:14px;}
+.proj-card p code{
+  font-family:var(--font-mono);
+  font-size:0.85em;
+  color:var(--data-blue);
+  background:rgba(61,169,252,0.1);
+  border:1px solid rgba(61,169,252,0.25);
+  padding:1px 6px;
+  border-radius:4px;
+}
+
+.proj-grid-featured{
+  grid-template-columns:1fr 1fr;
+}
+@media (max-width:880px){.proj-grid-featured{grid-template-columns:1fr;}}
+.proj-card-featured{
+  padding:30px 28px;
+  border-color:var(--signal-dim);
+  background:linear-gradient(160deg, var(--bg-card), var(--bg-raised));
+}
+.proj-card-featured .proj-icon{
+  color:var(--signal);
+  letter-spacing:0.04em;
+}
+.proj-card-featured h3{font-size:19px;}
+.proj-card-featured p{font-size:14.5px; line-height:1.65;}
+
+/* ---------- education ---------- */
+.edu-grid{display:flex; flex-direction:column; gap:0;}
+.edu-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+  padding:20px 0;
+  border-bottom:1px solid var(--line);
+  align-items:baseline;
+}
+.edu-row:last-child{border-bottom:none;}
+.edu-school{font-weight:600; font-family:var(--font-display); font-size:16px;}
+.edu-course{color:var(--ink-dim); font-size:14px; margin-top:4px;}
+.edu-time{font-family:var(--font-mono); font-size:12px; color:var(--muted); white-space:nowrap;}
+
+/* ---------- contact ---------- */
+.contact-box{
+  text-align:center;
+  padding:60px 40px;
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  position:relative;
+  overflow:hidden;
+}
+.contact-box::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,138,61,0.12), transparent 70%);
+}
+.contact-box h2{
+  font-family:var(--font-display);
+  font-size:clamp(1.6rem, 3.6vw, 2.3rem);
+  font-weight:700;
+  margin-bottom:14px;
+  position:relative;
+}
+.contact-box p{color:var(--ink-dim); margin-bottom:28px; position:relative;}
+.contact-links{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; position:relative;}
+
+/* ---------- resume ---------- */
+.resume-box{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:32px;
+  align-items:center;
+}
+@media (max-width:760px){.resume-box{grid-template-columns:1fr; gap:24px; text-align:center;}}
+.resume-box h3{
+  font-family:var(--font-display);
+  font-size:clamp(1.5rem,3vw,2rem);
+  font-weight:700;
+  margin-bottom:10px;
+}
+.resume-box p{color:var(--ink-dim); font-size:15px; margin-bottom:20px;}
+.resume-preview{
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:30px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  position:relative;
+  overflow:hidden;
+}
+.resume-preview::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse 70% 60% at 80% 20%, rgba(61,169,252,0.08), transparent 70%);
+  pointer-events:none;
+}
+.resume-line{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  color:var(--ink-dim);
+}
+.resume-line .r-dot{
+  width:6px; height:6px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+.resume-line .r-dot.blue{background:var(--data-blue);}
+.resume-line .r-dot.orange{background:var(--signal);}
+.resume-line .r-dot.green{background:var(--good);}
+.resume-line span{color:var(--ink); font-weight:600;}
+.resume-dl-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--font-mono);
+  font-size:14px;
+  font-weight:600;
+  padding:15px 28px;
+  border-radius:6px;
+  background:var(--signal);
+  color:#1A0E04;
+  transition:transform 0.2s, box-shadow 0.2s;
+  cursor:pointer;
+  border:none;
+  text-decoration:none;
+}
+.resume-dl-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 30px -10px rgba(255,138,61,0.5);
+}
+.resume-dl-btn svg{flex-shrink:0;}
+.resume-note{
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  color:var(--muted);
+  margin-top:10px;
+}
+
+footer{
+  padding:32px 0 48px;
+  text-align:center;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* scroll-to-top */
+.totop{
+  position:fixed;
+  bottom:24px; right:24px;
+  width:42px; height:42px;
+  border-radius:50%;
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  color:var(--ink-dim);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s, border-color 0.2s, transform 0.2s;
+  z-index:40;
+  font-size:16px;
+}
+.totop.show{opacity:1; pointer-events:auto;}
+.totop:hover{border-color:var(--signal); color:var(--signal); transform:translateY(-3px);}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">JSC<span>.</span>dat</div>
+    <div class="nav-links">
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#projects">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#resume">Resume</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="nav-resume" href="jithendra_Data_Analyst_Resume.pdf" download="jithendra_Data_Analyst_Resume.pdf">Download CV ↓</a>
+  </div>
+</nav>
+
+<header class="hero" id="home">
+  <canvas id="constellation"></canvas>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>OPEN TO <span class="role-rotate" id="roleRotate">DATA ANALYST</span> ROLES</div>
+      <h1>Hi there,<br>I'm <span class="accent">Jithendra</span> Chikkam</h1>
+      <div class="hero-role">I am into <span class="role-word">Data Analytics</span><span class="cursor"></span></div>
+      <p class="lede">Data Analyst with 1–2 years across retail, recruitment, and manufacturing operations — currently at Walmart, validating large-scale merchandise data and shipping dashboards that ops teams actually use.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#about">About Me ↓</a>
+      </div>
+      <div class="social-row">
+        <a href="https://www.linkedin.com/in/jithendrachikkam7702" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-pin">in</a>
+        <a href="https://github.com/jithendrachikkam" target="_blank" rel="noopener" aria-label="GitHub" class="social-pin">gh</a>
+        <a href="mailto:jithendrachikkam@gmail.com" aria-label="Email" class="social-pin">✉</a>
+        <a href="tel:+919493285357" aria-label="Phone" class="social-pin">☎</a>
+      </div>
+    </div>
+
+    <div class="avatar-wrap">
+      <div class="avatar-ring">
+        <div class="avatar-badge">
+          <span class="avatar-initials">JC</span>
+        </div>
+      </div>
+      <div class="orbit-node node-1"><div class="pin"><span class="ico"></span><span class="lbl" id="pinLbl1"><b>1,000+</b> GTINs validated</span></div></div>
+      <div class="orbit-node node-2"><div class="pin"><span class="ico"></span><span class="lbl" id="pinLbl2"><b>5+</b> Power BI dashboards</span></div></div>
+      <div class="orbit-node node-3"><div class="pin"><span class="ico ico-prev"></span><span class="lbl" id="pinLbl3"><b>~30%</b> placement lift · SadUp</span></div></div>
+      <div class="orbit-node node-4"><div class="pin"><span class="ico ico-prev"></span><span class="lbl" id="pinLbl4"><b>Tableau</b> dashboards · Siechem</span></div></div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <span class="sec-tag">about</span>
+    <div class="about-grid">
+      <div class="reveal">
+        <p>I'm a data analyst with 1–2 years of experience across <strong>retail, recruitment, and manufacturing operations</strong>. I transitioned into analytics from an Electronics & Communication Engineering background, applying analytical thinking to large-scale data reconciliation, KPI reporting, and process improvement.</p>
+        <p>Currently at Walmart, I validate and reconcile large merchandise datasets, automate SQL reporting workflows, and build Power BI dashboards that give ops stakeholders real-time visibility where they previously relied on weekly static reports.</p>
+        <p>My toolkit: <strong>SQL</strong>, <strong>Python (Pandas, NumPy)</strong>, <strong>Power BI</strong>, <strong>Tableau</strong>, and <strong>Advanced Excel</strong> — but what I'm really good at is taking multi-source, inconsistent data and making it clean, reliable, and decision-ready. I don't just build reports. I ask why the number is wrong, trace it back to the source, fix it, and make sure it doesn't break again.</p>
+      </div>
+      <div class="stat-grid reveal">
+        <div class="stat-cell"><div class="num">1000+</div><div class="lbl">GTIN RECORDS RECONCILED</div></div>
+        <div class="stat-cell"><div class="num">~70→90%</div><div class="lbl">DATA ACCURACY LIFT</div></div>
+        <div class="stat-cell"><div class="num">2d→4h</div><div class="lbl">REPORTING TURNAROUND CUT</div></div>
+        <div class="stat-cell"><div class="num">15+</div><div class="lbl">AT-RISK SKUS FLAGGED EARLY</div></div>
+        <div class="stat-cell"><div class="num">~30%</div><div class="lbl">PLACEMENT RATE LIFT</div></div>
+        <div class="stat-cell"><div class="num">18d→14d</div><div class="lbl">TIME-TO-HIRE CUT</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <span class="sec-tag">experience</span>
+    <h2 class="sec-title">Where the data has lived</h2>
+    <div class="timeline reveal-stagger">
+
+      <div class="tl-item current">
+        <div class="tl-dot"></div>
+        <span class="tl-badge">Current</span>
+        <div class="tl-head">
+          <span class="tl-role">Junior Analyst — Merchandise Operations <span style="color:var(--muted)">@</span> <span class="tl-company">Walmart</span></span>
+          <span class="tl-time">Aug 2025 — Present</span>
+        </div>
+        <div class="tl-loc">Chennai</div>
+        <ul class="tl-bullets">
+          <li>Validated and reconciled <strong>1,000+ GTIN datasets</strong> using SQL and Excel, resolving cross-source inconsistencies and improving data accuracy from <strong>~70% to above 90%</strong>.</li>
+          <li>Automated ad hoc SQL reporting workflows, cutting manual reporting turnaround from <strong>2 days to under 4 hours</strong> and eliminating recurring processing delays.</li>
+          <li>Diagnosed cross-system data defects through structured root cause analysis, reducing recurring data quality tickets by roughly <strong>1 in 5 per quarter</strong>.</li>
+          <li>Built interactive <strong>Power BI and Excel dashboards</strong> tracking merchandise KPIs, enabling real-time visibility for stakeholders who previously relied on weekly static reports.</li>
+          <li>Supported demand forecasting and inventory optimisation through statistical trend analysis, flagging <strong>15+ at-risk SKUs</strong> that were replenished early — contributing to reduced stockouts.</li>
+          <li>Built a browser-based <strong>image sequence validation tool</strong> that reads item content exports, lets content teams drag-and-drop reorder product images per GTIN, enriches each product card with live IQS data, and writes the corrected order straight back into the source sheet.</li>
+          <li>Designed a <strong>smart validation workflow</strong> that cross-checks each product's live images against the allocated image set from content planning, auto-flagging every GTIN as <code>GOOD_TO_GO</code>, <code>NEEDS_REVIEW</code>, or <code>GTIN_NOT_FOUND</code> — removing a manual line-by-line audit step.</li>
+          <li>Managed and resolved <strong>Jira fashion content tickets</strong> end-to-end within SLA timelines — triaging issues, coordinating with cross-functional teams, and ensuring on-time closure to maintain content pipeline health.</li>
+          <li>Built a <strong>Smart Forecasting model</strong> to predict future sales trends using historical data — running statistical analysis, identifying seasonality and demand signals, and continuously updating forecasts as new sales and business data came in to keep inventory planning accurate and responsive.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <span class="tl-role">Analyst — Recruitment Operations <span style="color:var(--muted)">@</span> <span class="tl-company">SadUp Softech Pvt Ltd</span></span>
+          <span class="tl-time">Aug 2024 — Aug 2025</span>
+        </div>
+        <div class="tl-loc">Hyderabad</div>
+        <ul class="tl-bullets">
+          <li>Analysed candidate pipeline data across <strong>500+ profiles</strong> using Excel and SQL, identifying screening-stage bottlenecks and improving placement rates by <strong>~30%</strong>.</li>
+          <li>Developed Excel-based MIS dashboards tracking <strong>10+ hiring KPIs</strong>, shifting reporting cadence from weekly to daily and cutting stakeholder wait time from <strong>5 days to same-day</strong>.</li>
+          <li>Identified recurring workflow bottlenecks through trend analysis, contributing to process changes that cut average time-to-hire from <strong>18 days to ~14 days</strong>.</li>
+          <li>Produced structured analytical reports and visualisations for HR stakeholders, translating raw hiring metrics into prioritised recruitment action plans.</li>
+          <li>Standardised metric definitions and reporting templates across recruitment functions, eliminating cross-team discrepancies in KPI counting.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <span class="tl-role">Analytics Intern — Manufacturing Operations <span style="color:var(--muted)">@</span> <span class="tl-company">Siechem Technologies Pvt Ltd</span></span>
+          <span class="tl-time">Jun 2024 — Aug 2024</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Built multi-source <strong>Tableau dashboards</strong> for manufacturing operations within a 2-month internship, cutting report generation time from ~5 hours to under <strong>3 hours per cycle</strong>.</li>
+          <li>Automated ETL workflows using <strong>Python (Pandas, NumPy)</strong> and SQL, reducing manual data preparation from ~4 hours to under <strong>2 hours per run</strong> — enabling the team to scale without added headcount.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <span class="tl-role">Data Analytics & Visualization Job Simulation <span style="color:var(--muted)">@</span> <span class="tl-company">Forage</span></span>
+          <span class="tl-time">Jul 2024 — Sep 2024</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Virtual job simulation covering data transformation, SQL querying, Tableau dashboards, and ETL automation for a simulated Accenture North America engagement.</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <span class="tl-role">Python Developer Intern <span style="color:var(--muted)">@</span> <span class="tl-company">CodeAlpha</span></span>
+          <span class="tl-time">Oct 2023 — Nov 2023</span>
+        </div>
+        <ul class="tl-bullets">
+          <li>Built an image-to-sound converter translating pixel data into audio tones using PIL and pyaudio.</li>
+          <li>Implemented a binary search algorithm with user-defined inputs.</li>
+          <li>Built an iterative and recursive Fibonacci series generator.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <span class="sec-tag">skills</span>
+    <h2 class="sec-title">The toolkit</h2>
+    <div class="skills-wrap">
+      <div class="reveal">
+        <div class="skillbar">
+          <div class="skillbar-top"><span>SQL</span><span class="pct">Advanced</span></div>
+          <div class="skillbar-track"><div class="skillbar-fill" data-pct="92"></div></div>
+        </div>
+        <div class="skillbar">
+          <div class="skillbar-top"><span>Power BI</span><span class="pct">Advanced</span></div>
+          <div class="skillbar-track"><div class="skillbar-fill" data-pct="85"></div></div>
+        </div>
+        <div class="skillbar">
+          <div class="skillbar-top"><span>Python (Pandas / NumPy)</span><span class="pct">Proficient</span></div>
+          <div class="skillbar-track"><div class="skillbar-fill" data-pct="78"></div></div>
+        </div>
+        <div class="skillbar">
+          <div class="skillbar-top"><span>Tableau</span><span class="pct">Proficient</span></div>
+          <div class="skillbar-track"><div class="skillbar-fill" data-pct="75"></div></div>
+        </div>
+        <div class="skillbar">
+          <div class="skillbar-top"><span>Excel / MIS Reporting</span><span class="pct">Advanced</span></div>
+          <div class="skillbar-track"><div class="skillbar-fill" data-pct="90"></div></div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="tag-cloud">
+          <span class="tag">EDA</span>
+          <span class="tag">Statistical Analysis</span>
+          <span class="tag">Process Improvement</span>
+          <span class="tag">Root Cause Analysis</span>
+          <span class="tag">ETL Pipelines</span>
+          <span class="tag">Data Validation</span>
+          <span class="tag">Data Reconciliation</span>
+          <span class="tag">KPI Reporting</span>
+          <span class="tag">Demand Forecasting</span>
+          <span class="tag">Ad Hoc Analysis</span>
+          <span class="tag">Stakeholder Reporting</span>
+        </div>
+        <div class="cert-list">
+          <div class="cert-item"><span class="ck">✓</span> Microsoft Azure Fundamentals (AZ-900) — Microsoft</div>
+          <div class="cert-item"><span class="ck">✓</span> SQL and Relational Databases 101 — IBM</div>
+          <div class="cert-item"><span class="ck">✓</span> Data Analysis Using Excel — Cisco</div>
+          <div class="cert-item"><span class="ck-progress">◐</span> Power BI Data Analyst (PL-300) — in progress</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <span class="sec-tag">projects</span>
+    <h2 class="sec-title">Tools & builds</h2>
+
+    <div class="proj-grid proj-grid-featured reveal-stagger">
+      <div class="proj-card proj-card-featured">
+        <div class="proj-icon">INTERNAL TOOL · WALMART</div>
+        <h3>Image Sequence Validation Tool</h3>
+        <p>A browser-based drag-and-drop tool for Walmart product content teams. Reads <code>Product_Content*.xlsx</code> item exports, displays every product's images in a gallery, lets teams reorder them by drag-and-drop, and writes the corrected order back into the same sheet — enriched with live IQS data (Abstract Product ID, Publish Status, Swatch Image). Also supports image audits, swatch-sheet matching, and cascading image order across GTINs.</p>
+      </div>
+      <div class="proj-card proj-card-featured">
+        <div class="proj-icon">INTERNAL TOOL · WALMART</div>
+        <h3>Smart Validation</h3>
+        <p>An optional validation layer that ingests the Allocated Images Sheet from content planning and cross-checks it against each product's live images. Every GTIN is automatically marked <code>GOOD_TO_GO</code>, <code>NEEDS_REVIEW</code>, or <code>GTIN_NOT_FOUND</code> — replacing a manual, line-by-line content audit.</p>
+      </div>
+    </div>
+
+    <div class="proj-grid reveal-stagger" style="margin-top:20px;">
+      <div class="proj-card">
+        <div class="proj-icon">PYTHON · PIL · PYAUDIO</div>
+        <h3>Image-to-Sound Converter</h3>
+        <p>Converts pixel data into audio tones — image processing meets audio synthesis.</p>
+      </div>
+      <div class="proj-card">
+        <div class="proj-icon">PYTHON · ALGORITHMS</div>
+        <h3>Binary Search Algorithm</h3>
+        <p>Efficient binary search with user-defined inputs, built around complexity optimization.</p>
+      </div>
+      <div class="proj-card">
+        <div class="proj-icon">PYTHON · RECURSION</div>
+        <h3>Fibonacci Generator</h3>
+        <p>Dynamic Fibonacci series generator using both iterative and recursive logic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <span class="sec-tag">education</span>
+    <h2 class="sec-title">Foundations</h2>
+    <div class="edu-grid reveal-stagger">
+      <div class="edu-row">
+        <div>
+          <div class="edu-school">BVC College of Engineering</div>
+          <div class="edu-course">Bachelor of Technology — Electronics & Communication Engineering</div>
+          <div class="edu-course" style="margin-top:4px; font-size:13px; color:var(--muted);">Applied statistics, logic design & signal processing — transitioned into data analytics through self-directed learning in SQL, Python, and BI tools.</div>
+        </div>
+        <div class="edu-time">2020 — 2023</div>
+      </div>
+      <div class="edu-row">
+        <div>
+          <div class="edu-school">BVC Institute of Technology & Science</div>
+          <div class="edu-course">Diploma — Electronics & Communication Engineering</div>
+        </div>
+        <div class="edu-time">2017 — 2020</div>
+      </div>
+      <div class="edu-row">
+        <div>
+          <div class="edu-school">Gita Vidyalaya High School</div>
+          <div class="edu-course">SSC, 10th</div>
+        </div>
+        <div class="edu-time">2016 — 2017</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="resume">
+  <div class="wrap">
+    <span class="sec-tag">resume</span>
+    <h2 class="sec-title">Download My Resume</h2>
+    <div class="resume-box reveal">
+      <div>
+        <h3>One page.<br>All signal,<br>no noise.</h3>
+        <p>SQL · Python · Power BI · Tableau · Excel — 1–2 years across Walmart, SadUp Softech, and Siechem Technologies. Click to grab the PDF.</p>
+        <a class="resume-dl-btn" href="jithendra_Data_Analyst_Resume.pdf" download="jithendra_Data_Analyst_Resume.pdf">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Resume (PDF)
+        </a>
+        <p class="resume-note">Updated with your latest resume — jithendra_Data_Analyst_Resume.pdf</p>
+      </div>
+      <div class="resume-preview">
+        <div class="resume-line"><span class="r-dot orange"></span><span>Jithendra Srinivas Chikkam</span></div>
+        <div class="resume-line"><span class="r-dot blue"></span>Junior Analyst · <span>Walmart</span> — Aug 2025–Present</div>
+        <div class="resume-line"><span class="r-dot green"></span>Analyst · <span>SadUp Softech Pvt Ltd</span> — Aug 2024–Aug 2025</div>
+        <div class="resume-line"><span class="r-dot green"></span>Analytics Intern · <span>Siechem Technologies</span> — Jun–Aug 2024</div>
+        <div class="resume-line" style="margin-top:6px;"><span class="r-dot blue"></span>SQL · Python · Power BI · Tableau · Excel</div>
+        <div class="resume-line"><span class="r-dot orange"></span>AZ-900 · IBM SQL · Cisco Excel · PL-300 (in progress)</div>
+        <div class="resume-line"><span class="r-dot blue"></span>B.Tech ECE · BVC College of Engineering, 2020–2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box reveal">
+      <h2>Let's talk data.</h2>
+      <p>Looking for data analyst roles where the work is complex, the data is messy, and the insights actually move the business.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:jithendrachikkam@gmail.com">jithendrachikkam@gmail.com</a>
+        <a class="btn btn-ghost" href="tel:+919493285357">+91 94932 85357</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/jithendrachikkam7702" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/jithendrachikkam" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>Built by Jithendra Srinivas Chikkam · Chennai, Tamil Nadu</footer>
+
+<div class="totop" id="totop" title="Back to top">↑</div>
+
+<script>
+// Typewriter effect for hero role line
+(function(){
+  const el = document.querySelector('.role-word');
+  if(!el) return;
+  const words = ['Data Analytics', 'SQL & Python', 'MIS Reporting', 'Power BI Dashboards'];
+  let wi = 0, ci = 0, deleting = false;
+
+  function tick(){
+    const word = words[wi];
+    if(!deleting){
+      ci++;
+      el.textContent = word.slice(0, ci);
+      if(ci === word.length){
+        deleting = true;
+        setTimeout(tick, 1600);
+        return;
+      }
+    } else {
+      ci--;
+      el.textContent = word.slice(0, ci);
+      if(ci === 0){
+        deleting = false;
+        wi = (wi + 1) % words.length;
+      }
+    }
+    setTimeout(tick, deleting ? 35 : 65);
+  }
+  setTimeout(tick, 1000);
+})();
+
+// Rotating "OPEN TO ___ ROLES" eyebrow badge
+(function(){
+  const el = document.getElementById('roleRotate');
+  if(!el) return;
+  const roles = ['DATA ANALYST', 'ANALYST', 'SQL & PYTHON', 'MIS REPORTING'];
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % roles.length;
+    el.style.opacity = 0;
+    setTimeout(() => {
+      el.textContent = roles[i];
+      el.style.opacity = 1;
+    }, 250);
+  }, 2200);
+})();
+
+// Rotating stat pins around the avatar
+(function(){
+  const pools = [
+    [ '<b>1,000+</b> GTINs validated', '<b>~70→90%</b> data accuracy', '<b>Jira</b> Fashion SLA tickets' ],
+    [ '<b>5+</b> Power BI dashboards', '<b>Image sequence</b> validation tool built', '<b>Smart Forecasting</b> model built' ],
+    [ '<b>25%</b> faster reporting', '<b>~30%</b> placement rate lift · SadUp Softech', '<b>500+</b> profiles analysed · SadUp Softech' ],
+    [ '<b>20%</b> fewer data incidents', '<b>Tableau dashboards</b> · Siechem Technologies', '<b>ETL automation</b> · Siechem Technologies' ]
+  ];
+  pools.forEach((pool, idx) => {
+    const el = document.getElementById('pinLbl' + (idx + 1));
+    if(!el) return;
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % pool.length;
+      el.style.opacity = 0;
+      setTimeout(() => {
+        el.innerHTML = pool[i];
+        el.style.opacity = 1;
+      }, 200);
+    }, 3400 + idx * 700);
+  });
+})();
+
+// Constellation canvas background in hero
+(function(){
+  const canvas = document.getElementById('constellation');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const hero = canvas.parentElement;
+  let w, h, points, animId;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    w = canvas.width = hero.clientWidth;
+    h = canvas.height = hero.clientHeight;
+  }
+
+  function makePoints(){
+    const count = Math.max(28, Math.floor((w * h) / 38000));
+    points = Array.from({length: count}, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25
+    }));
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+    const maxDist = 140;
+
+    for(let i = 0; i < points.length; i++){
+      const p = points[i];
+      if(!reduceMotion){
+        p.x += p.vx;
+        p.y += p.vy;
+        if(p.x < 0 || p.x > w) p.vx *= -1;
+        if(p.y < 0 || p.y > h) p.vy *= -1;
+      }
+    }
+
+    for(let i = 0; i < points.length; i++){
+      for(let j = i + 1; j < points.length; j++){
+        const a = points[i], b = points[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < maxDist){
+          ctx.strokeStyle = `rgba(61,169,252,${0.14 * (1 - dist / maxDist)})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    for(const p of points){
+      ctx.fillStyle = 'rgba(174,183,199,0.55)';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if(!reduceMotion) animId = requestAnimationFrame(draw);
+  }
+
+  resize();
+  makePoints();
+  draw();
+
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(animId);
+    resize();
+    makePoints();
+    draw();
+  });
+})();
+
+// Active nav link on scroll
+(function(){
+  const links = document.querySelectorAll('.nav-links a');
+  const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  function onScroll(){
+    let current = sections[0];
+    for(const sec of sections){
+      if(sec.getBoundingClientRect().top < window.innerHeight * 0.4) current = sec;
+    }
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current.id));
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+})();
+
+// Scroll reveal
+(function(){
+  const targets = document.querySelectorAll('.reveal, .reveal-stagger');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+      }
+    });
+  }, { threshold: 0.15 });
+  targets.forEach(t => io.observe(t));
+
+  // Skill bars fill when in view
+  const skillSection = document.getElementById('skills');
+  const bars = document.querySelectorAll('.skillbar-fill');
+  const skillIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        bars.forEach(bar => {
+          bar.style.width = bar.getAttribute('data-pct') + '%';
+        });
+        skillIO.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  if(skillSection) skillIO.observe(skillSection);
+})();
+
+// Back to top button
+(function(){
+  const btn = document.getElementById('totop');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 600) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+})();
+</script>
+
+</body>
+</html>
